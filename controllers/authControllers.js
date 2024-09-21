@@ -17,16 +17,21 @@ exports.register = async (req, res) => {
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
       return res
-        .status(409) // Conflict status code
+        .status(409)
         .json({ message: "User with this email already registered" });
     }
 
     // Create a new user
     const user = await User.create({ name, email, password });
-    const token = createToken(user); // Generate a token for the new user
+    const token = createToken(user);
 
     // Set a cookie with the JWT token
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
+
     res.status(201).json({
       message: "User registered successfully",
       user: { id: user._id, name: user.name, email: user.email },
@@ -68,7 +73,11 @@ exports.login = async (req, res) => {
 
     // Generate a token for the authenticated user
     const token = createToken(user);
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+    });
 
     res.status(200).json({
       message: "Login successful",
