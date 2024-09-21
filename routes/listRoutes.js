@@ -4,7 +4,7 @@ const List = require("../models/listModel");
 const { verifyToken } = require("../middlewares/authMiddleware");
 
 // Create a new list item
-router.post("/add", verifyToken, async (req, res) => {
+router.post("/add", async (req, res) => {
   try {
     const { name, age, description, address, tags } = req.body;
     const userId = req.user.id; // Get userId from the middleware
@@ -18,7 +18,7 @@ router.post("/add", verifyToken, async (req, res) => {
 });
 
 // Fetch all list items for the authenticated user
-router.get("/get", verifyToken, async (req, res) => {
+router.get("/get", async (req, res) => {
   try {
     const lists = await List.find(); // Fetch lists associated with the user
     res.status(200).send(lists);
@@ -28,7 +28,7 @@ router.get("/get", verifyToken, async (req, res) => {
 });
 
 // Fetch a single list item by ID
-router.get("/get/:id", verifyToken, async (req, res) => {
+router.get("/get/:id", async (req, res) => {
   try {
     const list = await List.findOne({ _id: req.params.id });
     if (!list) {
@@ -43,7 +43,7 @@ router.get("/get/:id", verifyToken, async (req, res) => {
 });
 
 // Update a list item by ID
-router.patch("/edit/:id", verifyToken, async (req, res) => {
+router.patch("/edit/:id", async (req, res) => {
   try {
     const list = await List.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
@@ -61,7 +61,7 @@ router.patch("/edit/:id", verifyToken, async (req, res) => {
 });
 
 // Delete a list item by ID
-router.delete("/delete/:id", verifyToken, async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const list = await List.findOneAndDelete({
       _id: req.params.id,
