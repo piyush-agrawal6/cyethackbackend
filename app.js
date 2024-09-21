@@ -16,8 +16,9 @@ app.use(helmet()); // Security best practices
 
 // CORS configuration
 const allowedOrigins = [
-  "https://cyethackk.vercel.app", // Frontend deployment domain
-  "http://localhost:5173", // Local development domain
+  "https://cyethackk.vercel.app",
+  "http://localhost:5173",
+  "https://cyethackassignment.vercel.app",
 ];
 
 app.use(
